@@ -1,0 +1,31 @@
+Youtube Videos :
+
+-3D Hand Pose Estimation Using Convolutional Neural Networks :
+	https://www.youtube.com/watch?v=aE7kW4b6CjA
+
+-Deep Hand Gesture (Python+OpenCV+Keras+Tensorflow) :
+	https://www.youtube.com/watch?v=jYFf6jli1R4
+
+-Hand Pose Detection -used for Gesture Recognition with OpenCV Python - with Code (Detects Key Point) :
+	https://www.youtube.com/watch?v=c_6K2L5gh0A
+
+-Number Sign Recognition - Image Classifier in OpenCV and Keras - Convolutional Neural Network (CNN) :
+	https://www.youtube.com/watch?v=SgKOTgrGnXI
+
+-Hand Gesture Detection AI With Convolutional Neural Networks :
+	https://www.youtube.com/watch?v=Y6oLbRKwmPk
+
+-Hand Tracking 30 FPS using CPU | OpenCV Python (2021) | Computer Vision
+	https://www.youtube.com/watch?v=NZde8Xt78Iw
+
+
+Githubs :
+https://github.com/waynshang/Gesture-Recognition-with-3DCNN
+https://github.com/jrobchin/Computer-Vision-Basics-with-Python-Keras-and-OpenCV
+https://github.com/mmittek/openpose-keras
+
+Tools :
+https://google.github.io/mediapipe/solutions/hands
+
+Artciles :
+https://paperswithcode.com/task/hand-gesture-recognition
