@@ -1,9 +1,7 @@
 import cv2
 import numpy as np
-import tensorflow as tf
-import RegNet as rg
 
-def track_hand(results,frame) :
+def track_hand(results,frame, net) :
 
     handLms = results.multi_hand_landmarks[0]
     xList=[]
@@ -32,15 +30,6 @@ def track_hand(results,frame) :
     crop_img = frame[boundbox[1]:boundbox[3], boundbox[0]:boundbox[2]].copy()
     final_frame = cv2.resize(crop_img, (256,256), interpolation=cv2.INTER_CUBIC)
     final_frame = np.reshape(final_frame, (1,256,256,3))
-
-    net = rg.RegNet34()
-    optimizer = tf.keras.optimizers.Adadelta(lr=1e-4)
-    net.model.compile(optimizer=optimizer,
-                      loss=['mse', 'mse', 'mse'],
-                      loss_weights=[100, 100, 1],
-                      metrics=['mse'])
-    net.model.load_weights('/weights/weights.h5')
-
     result = net.model.predict_on_batch(final_frame)
     heatmap = result[2]
     joint_list = []

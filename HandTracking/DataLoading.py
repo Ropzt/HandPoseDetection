@@ -78,7 +78,8 @@ LOAD DATA
 
 class batch_maker(tf.keras.utils.Sequence) :
 
-  def __init__(self, batch_size=20):
+  def __init__(self,root, batch_size=20):
+    self.root_path=root
     self.batch_size = batch_size
 
   def generate_batch(self) :
@@ -86,7 +87,7 @@ class batch_maker(tf.keras.utils.Sequence) :
     :return: a batch_size quantity of 1 input and 4 outputs
     """
     num_list = make_1024_list()
-    rand_list = np.random.randint(0,1025,int(self.batch_size/2))
+    rand_list = np.random.randint(0,1024,int(self.batch_size/2))
     rand_folder = int(np.random.randint(0, 141, 1))
     image=[]
     target_2D=[]
@@ -101,65 +102,65 @@ class batch_maker(tf.keras.utils.Sequence) :
         error = False
         for y in rand_list:
             try:
-                img_path_nobj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/noObject/' + num_list[
+                img_path_nobj = self.root_path+'/data/noObject/' + num_list[
                     rand_folder] + '/' + num_list[y] + '_color_composed.png'
                 image_nobj = Image.open(img_path_nobj)
-                img_path_obj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/withObject/' + num_list[
+                img_path_obj = self.root_path+'/data/withObject/' + num_list[
                     rand_folder] + '/' + num_list[y] + '_color_composed.png '
                 image_obj = Image.open(img_path_obj)
             except FileNotFoundError:
-                print('The batch_maker tried to use a file that dont exist. Trying a new one.')
+                print('The batch_maker tried to open a file that dont exist. Trying a new one.')
                 error = True
         if error:
             retry = True
-            rand_list = np.random.randint(0, 1025, int(self.batch_size/ 2))
+            rand_list = np.random.randint(0, 1024, int(self.batch_size/ 2))
             rand_folder = int(np.random.randint(0, 141, 1))
 
     for y in rand_list :
 
-        img_path_nobj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/noObject/'+num_list[rand_folder]+'/'+num_list[y]+'_color_composed.png'
+        img_path_nobj = self.root_path+'/data/noObject/'+num_list[rand_folder]+'/'+num_list[y]+'_color_composed.png'
         image_nobj = Image.open(img_path_nobj)
         image_nobj = np.asarray(image_nobj, dtype="uint8")
         image_nobj = np.asarray(image_nobj, np.float)
         image_nobj = image_nobj / 255.0
         image.append(image_nobj)
 
-        img_path_obj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/withObject/'+num_list[rand_folder]+'/'+num_list[y]+'_color_composed.png '
+        img_path_obj = self.root_path+'/data/withObject/'+num_list[rand_folder]+'/'+num_list[y]+'_color_composed.png '
         image_obj = Image.open(img_path_obj)
         image_obj = np.asarray(image_obj, dtype="uint8")
         image_obj = np.asarray(image_obj, np.float)
         image_obj = image_obj / 255.0
         image.append(image_obj)
 
-        target_path_2D_nobj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/noObject/'+num_list[rand_folder]+'/'+num_list[y]+'_joint2D.txt'
+        target_path_2D_nobj = self.root_path+'/data/noObject/'+num_list[rand_folder]+'/'+num_list[y]+'_joint2D.txt'
         target_2D_nobj= extract_from_txt(target_path_2D_nobj,  out_heatmap=True)
         target_2D.append(target_2D_nobj)
 
-        target_path_2D_obj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/withObject/'+num_list[rand_folder]+'/'+num_list[y]+'_joint2D.txt'
+        target_path_2D_obj = self.root_path+'/data/withObject/'+num_list[rand_folder]+'/'+num_list[y]+'_joint2D.txt'
         target_2D_obj = extract_from_txt(target_path_2D_obj,  out_heatmap=True)
         target_2D.append(target_2D_obj)
 
-        target_path_3Drate_nobj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/noObject/' + num_list[rand_folder]+'/'+num_list[y] + '_joint_pos.txt'
+        target_path_3Drate_nobj = self.root_path+'/data/noObject/' + num_list[rand_folder]+'/'+num_list[y] + '_joint_pos.txt'
         target_3Drate_nobj = extract_from_txt(target_path_3Drate_nobj,  out_heatmap=False)
         target_3Drate.append(target_3Drate_nobj)
 
-        target_path_3Drate_obj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/withObject/' + num_list[rand_folder]+'/'+num_list[y] + '_joint_pos.txt'
+        target_path_3Drate_obj = self.root_path+'/data/withObject/' + num_list[rand_folder]+'/'+num_list[y] + '_joint_pos.txt'
         target_3Drate_obj = extract_from_txt(target_path_3Drate_obj, out_heatmap=False)
         target_3Drate.append(target_3Drate_obj)
 
-        target_path_3D_nobj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/noObject/' + num_list[rand_folder]+'/'+num_list[y] + '_joint_pos_global.txt'
+        target_path_3D_nobj = self.root_path+'/data/noObject/' + num_list[rand_folder]+'/'+num_list[y] + '_joint_pos_global.txt'
         target_3D_nobj = extract_from_txt(target_path_3D_nobj,  out_heatmap=False)
         target_3D.append(target_3D_nobj)
 
-        target_path_3D_obj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/withObject/' + num_list[rand_folder]+'/'+num_list[y] + '_joint_pos_global.txt'
+        target_path_3D_obj = self.root_path+'/data/withObject/' + num_list[rand_folder]+'/'+num_list[y] + '_joint_pos_global.txt'
         target_3D_obj = extract_from_txt(target_path_3D_obj,  out_heatmap=False)
         target_3D.append(target_3D_obj)
 
-        target_path_crop_nobj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/noObject/' + num_list[rand_folder]+'/'+num_list[y] + '_crop_params.txt'
+        target_path_crop_nobj = self.root_path+'/data/noObject/' + num_list[rand_folder]+'/'+num_list[y] + '_crop_params.txt'
         target_crop_nobj = extract_from_txt(target_path_crop_nobj,  out_heatmap=False)
         target_crop.append(target_crop_nobj)
 
-        target_path_crop_obj = 'D:/HandsDataset/FAKEHANDS/GANeratedHands_Release/data/withObject/' + num_list[rand_folder]+'/'+num_list[y] + '_crop_params.txt'
+        target_path_crop_obj = self.root_path+'/data/withObject/' + num_list[rand_folder]+'/'+num_list[y] + '_crop_params.txt'
         target_crop_obj = extract_from_txt(target_path_crop_obj, out_heatmap=False)
         target_crop.append(target_crop_obj)
 

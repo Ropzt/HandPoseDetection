@@ -8,8 +8,8 @@ import RegNet as rg
 """
 MAIN
 """
-
-gen = dl.batch_maker(batch_size=28)
+# Enter the path to the /data folder in the GANeratedHands dataset you downloaded from https://handtracker.mpi-inf.mpg.de/projects/GANeratedHands/GANeratedDataset.htm
+gen = dl.batch_maker(root='D:/HandDataset/GANeratedHands_Release',batch_size=28)
 
 net = rg.RegNet34()
 
