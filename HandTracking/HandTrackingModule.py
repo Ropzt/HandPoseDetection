@@ -2,7 +2,13 @@ import cv2
 import numpy as np
 
 def track_hand(results,frame, net) :
+    """
 
+    :param results:
+    :param frame:
+    :param net:
+    :return:
+    """
     handLms = results.multi_hand_landmarks[0]
     xList=[]
     yList=[]

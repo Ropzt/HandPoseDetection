@@ -16,7 +16,7 @@ net = rg.RegNet34()
 optimizer = tf.keras.optimizers.Adadelta(lr=1e-4)
 
 net.model.compile(optimizer=optimizer,
-                         loss=['mse','mse','mse'],
+                         loss=['mse', 'mse', 'mse'],
                          loss_weights=[100, 100, 1],
                          metrics=['mse'])
 

@@ -26,6 +26,13 @@ def make_1024_list() :
   return list
 
 def multivariate_gaussian(pos, mu, Sigma):
+  """
+
+  :param pos:
+  :param mu:
+  :param Sigma:
+  :return:
+  """
   n = mu.shape[0]
   Sigma_det = np.linalg.det(Sigma)
   Sigma_inv = np.linalg.inv(Sigma)
@@ -37,6 +44,12 @@ def multivariate_gaussian(pos, mu, Sigma):
 
 
 def gaussian_heat_map(x, N):
+  """
+
+  :param x:
+  :param N:
+  :return:
+  """
   X = np.linspace(0, N, N)
   Y = np.linspace(0, N, N)
   X, Y = np.meshgrid(X, Y)
@@ -78,17 +91,22 @@ LOAD DATA
 
 class batch_maker(tf.keras.utils.Sequence) :
 
-  def __init__(self,root, batch_size=20):
-    self.root_path=root
+  def __init__(self, root, batch_size=20):
+    """
+
+    :param root:
+    :param batch_size:
+    """
+    self.root_path = root
     self.batch_size = batch_size
 
   def generate_batch(self) :
     """
-    :return: a batch_size quantity of 1 input and 4 outputs
+    :return: a batch_size quantity of 1 input (image)  and 4 outputs (target_crop, target_3D, target_3Drate, target_2D)
     """
     num_list = make_1024_list()
-    rand_list = np.random.randint(0,1024,int(self.batch_size/2))
-    rand_folder = int(np.random.randint(0, 141, 1))
+    rand_list = np.random.randint(0,1023,int(self.batch_size/2))
+    rand_folder = int(np.random.randint(0, 139, 1))
     image=[]
     target_2D=[]
     target_3D=[]
@@ -113,8 +131,8 @@ class batch_maker(tf.keras.utils.Sequence) :
                 error = True
         if error:
             retry = True
-            rand_list = np.random.randint(0, 1024, int(self.batch_size/ 2))
-            rand_folder = int(np.random.randint(0, 141, 1))
+            rand_list = np.random.randint(0, 1023, int(self.batch_size/ 2))
+            rand_folder = int(np.random.randint(0, 139, 1))
 
     for y in rand_list :
 

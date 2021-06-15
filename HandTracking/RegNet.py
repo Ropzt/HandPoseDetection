@@ -12,8 +12,15 @@ def euclidean_distance_loss(y_true, y_pred):
     return K.sqrt(K.sum(K.square(y_pred - y_true), axis=-1))
 """
 
-def identity_block(X, f, filters, step):
+def identity_block(X, f, filters, step) :
+    """
 
+    :param X:
+    :param f:
+    :param filters:
+    :param step:
+    :return:
+    """
     # Retrieve Filters
     F1, F2 = filters
 
@@ -38,14 +45,22 @@ def identity_block(X, f, filters, step):
     X = tf.keras.layers.BatchNormalization(axis=3, name='Batch_Conv'+str(step)+'_3a')(X)
 
     # Final step: Add shortcut value to main path, and pass it through a RELU activation
-    X = tf.keras.layers.Add( name='Product_Conv_'+str(step)+'_3a')([X, X_shortcut])
+    X = tf.keras.layers.Add(name='Product_Conv_'+str(step)+'_3a')([X, X_shortcut])
     X = tf.keras.layers.Activation('relu', name='Relu_Conv_'+str(step)+'_3a')(X)
 
     return X
 
 
-def convolutional_block(X, f, filters,step, s=2):
+def convolutional_block(X, f, filters, step, s=2):
+    """
 
+    :param X:
+    :param f:
+    :param filters:
+    :param step:
+    :param s:
+    :return:
+    """
     # Retrieve Filters
     F1, F2 = filters
 
@@ -83,7 +98,11 @@ def convolutional_block(X, f, filters,step, s=2):
 class RegNet34() :
 
     def __init__(self,input_shape=(256, 256, 3), heatmap_shape=(32,32)):
+        """
 
+        :param input_shape:
+        :param heatmap_shape:
+        """
         step=1
         # Define the input as a tensor with shape input_shape
         X_input = tf.keras.layers.Input(input_shape)
@@ -201,7 +220,13 @@ class RegNet34() :
         self.model = tf.keras.Model(inputs=X_input, outputs=[X_3D,X_3Dj,X_heatmap], name='RegNet34')
 
 
-    def train_on_batch(self, epoch, generator):
+    def train_on_batch(self, epoch, generator) :
+        """
+
+        :param epoch:
+        :param generator:
+        :return:
+        """
         for i in range(0, epoch):
             image, crop_param, joint_3d, joint_3d_rate, joint_2d = generator.generate_batch()
             joint_3d_rate = np.reshape(joint_3d_rate, (-1, 21, 1, 3))
@@ -209,6 +234,12 @@ class RegNet34() :
             self.test_on_batch(generator, i + 1)
 
     def test_on_batch(self, generator, epoch):
+        """
+
+        :param generator:
+        :param epoch:
+        :return:
+        """
         min_loss = [10000.0, 10000., 100000., 100000., 100000., 100000., 100000.]
         sum_result = [0.0, 0., 0., 0., 0., 0., 0.]
         image, crop_param, joint_3d, joint_3d_rate, joint_2d = generator.generate_batch()
@@ -223,12 +254,9 @@ class RegNet34() :
             min_loss = sum_result
             print(epoch, min_loss)
 
-            image, crop_param, joint_3d, joint_3d_rate, joint_2d = generator.generate_batch()
-            result = self.model.predict_on_batch(x=[image])
-
-            #Handling the name ambiguities in the metadata creating the h5 file.
+            # Handling the name ambiguities in the metadata creating the h5 file.
             for i, w in enumerate(self.model.weights):
-                new_name=w.name + str(np.random.randint(0,10025))+str(np.random.randint(0,10025))
+                new_name = w.name + str(np.random.randint(0, 10025))+str(np.random.randint(0, 10025))
                 self.model.weights[i]._handle_name = new_name
             for i, var in enumerate(self.model.optimizer.weights):
                 name = 'variable{}'.format(i)
