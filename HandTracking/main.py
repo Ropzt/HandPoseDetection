@@ -18,7 +18,7 @@ regnet.model.compile(optimizer=optimizer,
                       loss=['mse', 'mse', 'mse'],
                       loss_weights=[100, 100, 1],
                       metrics=['mse'])
-regnet.model.load_weights('/weights/weights.h5')
+regnet.model.load_weights('./weights/weights.h5')
 
 while True :
         ret, frame = stream.read()              # read cam and put the data in frame

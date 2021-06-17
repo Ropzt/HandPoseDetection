@@ -120,12 +120,13 @@ class batch_maker(tf.keras.utils.Sequence) :
         error = False
         for y in rand_list:
             try:
-                img_path_nobj = self.root_path+'/data/noObject/' + num_list[
+                img_path_nobj = self.root_path +'/data/noObject/' + num_list[
                     rand_folder] + '/' + num_list[y] + '_color_composed.png'
                 image_nobj = Image.open(img_path_nobj)
                 img_path_obj = self.root_path+'/data/withObject/' + num_list[
-                    rand_folder] + '/' + num_list[y] + '_color_composed.png '
+                    rand_folder] + '/' + num_list[y] + '_color_composed.png'
                 image_obj = Image.open(img_path_obj)
+
             except FileNotFoundError:
                 print('The batch_maker tried to open a file that dont exist. Trying a new one.')
                 error = True
