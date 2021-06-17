@@ -263,7 +263,7 @@ class RegNet34() :
                 self.model.optimizer.weights[i] = tf.Variable(var, name=name)
 
             self.model.save('model.h5')
-            self.model.save_weights('/weights/weights.h5')
+            self.model.save_weights('./weights/weights.h5')
 
             idx = (idx + 1)
 
